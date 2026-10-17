@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+/*
+ * ─────────────────────────────────────────────────────────────
+ *  BRAND THEME — change colours and fonts here.
+ *  Tailwind turns each --color-* token into utilities, e.g.
+ *  --color-navy-900  →  bg-navy-900 / text-navy-900 / border-navy-900
+ * ─────────────────────────────────────────────────────────────
+ */
+@theme {
+  /* Primary — deep navy */
+  --color-navy-950: #071324;
+  --color-navy-900: #0c1d36;
+  --color-navy-800: #132a4c;
+  --color-navy-700: #1b3a66;
+  --color-navy-600: #26508a;
+
+  /* Supporting steel blue (links, small highlights) */
+  --color-steel-600: #1f62b8;
+  --color-steel-500: #2f7ad6;
+  --color-steel-300: #8fb8ec;
+
+  /* Accent — amber (CTAs). Pair with navy text for contrast. */
+  --color-amber-500: #f59a23;
+  --color-amber-400: #f8ad4a;
+  --color-amber-600: #dc8212;
+
+  /* Graphite / neutrals */
+  --color-graphite-900: #16191e;
+  --color-graphite-800: #20252c;
+  --color-graphite-700: #2d333c;
+  --color-ink: #0f1720;
+  --color-muted: #566273;
+  --color-subtle: #7d8899;
+  --color-line: #dde3ea;
+  --color-paper: #f4f6fa;
+  --color-paper-2: #e9edf2;
+
+  /* Typography */
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container-site: 80rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    font-feature-settings: 'ss01';
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-balance;
+    letter-spacing: -0.015em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-amber-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection {
+    background: var(--color-amber-400);
+    color: var(--color-navy-950);
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-(--container-site) px-5 sm:px-8;
+  }
+
+  /* Small technical label, e.g. "01 — MECHANICAL" */
+  .eyebrow {
+    @apply font-mono text-[0.72rem] font-medium tracking-[0.16em] uppercase;
+  }
+
+  /* Faint engineering grid used behind dark sections */
+  .blueprint {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .blueprint-light {
+    background-image:
+      linear-gradient(to right, rgb(12 29 54 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(12 29 54 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Corner registration marks around images */
+  .tick-frame {
+    position: relative;
+  }
+  .tick-frame::before,
+  .tick-frame::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .tick-frame::before {
+    top: -8px;
+    left: -8px;
+    border-top: 2px solid var(--color-amber-500);
+    border-left: 2px solid var(--color-amber-500);
+  }
+  .tick-frame::after {
+    bottom: -8px;
+    right: -8px;
+    border-bottom: 2px solid var(--color-amber-500);
+    border-right: 2px solid var(--color-amber-500);
+  }
+
+  .form-field {
+    @apply block w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-[0.95rem] text-ink shadow-[inset_0_1px_0_rgb(0_0_0/0.02)] transition-colors placeholder:text-subtle hover:border-navy-600/40 focus:border-steel-500 focus:ring-2 focus:ring-steel-500/20 focus:outline-none;
+  }
+  .form-field[aria-invalid='true'] {
+    @apply border-red-600 focus:ring-red-600/20;
+  }
+}
+
+/* Image fallback: if a photo fails, the navy tile behind it stays visible */
+.img-tile {
+  background:
+    linear-gradient(135deg, var(--color-navy-800), var(--color-navy-950));
+}
+
+/* Amber gradient headline text */
+.text-gradient-amber {
+  background: linear-gradient(100deg, #ffd08a 0%, var(--color-amber-500) 45%, #ff7a1a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Slow cinematic zoom on the hero photo */
+@keyframes hero-zoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+.hero-zoom {
+  animation: hero-zoom 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Subtle lift for cards */
+.card-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -28px rgb(7 19 36 / 0.5);
+}
